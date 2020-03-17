@@ -1,5 +1,6 @@
 {
   "python.linting.pylintEnabled": false,
   "python.linting.mypyEnabled": true,
-  "python.linting.enabled": true
+  "python.linting.enabled": true,
+  "python.pythonPath": "/home/rob/.virtualenvs/py3/bin/python"
 }

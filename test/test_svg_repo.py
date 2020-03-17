@@ -1,11 +1,12 @@
 from hamcrest import assert_that, equal_to
 from textwrap import dedent
-from concepts.svg import SvgDrawing, xml_tree_from, as_drawing, as_layers, as_layer, as_stroke
-from concepts.domain import Drawing, Layer, Stroke
+from consplit.svg import SvgRepo, xml_tree_from, as_drawing, as_layers, as_layer, as_stroke
+from consplit.domain import Drawing, Layer, Stroke
+from builders import a, validDrawing
 
 class TestSvgRepoReadingFiles:
   def test_creates_a_drawing(self):
-    drawing = SvgDrawing().read('data/drawing.svg')
+    drawing = SvgRepo().read('data/drawing.svg')
     assert_that(drawing.name, equal_to('the_drawing'))
 
 class TestSvgToDrawing:
@@ -103,3 +104,11 @@ def xml_tree_with_one_layer_with(xml_string):
       </g>
     </svg>
     ''').format(xml_string).encode('utf-8'))
+
+class TestSvgRepoWritingFiles:
+  def test_writes_a_valid_drawing(self):
+    written_drawing = a(validDrawing().withName('written_drawing'))
+    SvgRepo().save(written_drawing, 'data')
+    read_drawing = SvgRepo().read('data/written_drawing.svg')
+    assert_that(read_drawing, equal_to(written_drawing))
+
