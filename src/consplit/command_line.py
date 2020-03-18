@@ -2,20 +2,8 @@
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 from consplit.formats import SvgRepo, PngRepo
 from consplit.files import location_of
+from consplit.version import version
 from textwrap import dedent
-
-def usage():
-  print(dedent('''\
-    consplit [options] path_to_svg
-
-    Where:
-
-      path_to_svg: is the path to the input svg
-      options is one of:
-      --help,-h:    show this message
-      --stacked,-s: use stacked mode
-    '''))
-  sys.exit(2)
 
 def main():
   parser = ArgumentParser(description='''\
@@ -37,6 +25,8 @@ def main():
     ''',
     formatter_class=RawDescriptionHelpFormatter)
   parser.add_argument('concepts_svg_file', help="path to the the input svg file")
+  parser.add_argument('-v','--version', help="show version and exit", 
+                      action='version', version='consplit {}'.format(version))
   parser.add_argument('-s','--stacked', help="use stacked mode", 
                       action='store_const', const='_stacked', default='')
   parser.add_argument('--png', help="create png as output format", 

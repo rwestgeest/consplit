@@ -1,13 +1,15 @@
 from setuptools import setup, find_packages
-
+from sys import path
+sys.path.append('src')
+from consplit.version import version
 with open("README.md", "r") as fh:
   long_description = fh.read()
 with open("requirements.txt", "r") as fh:
   requires = fh.readlines()
-    
+
 setup(
   name='consplit',  
-  version='0.2',
+  version=version,
   author="Rob Westgeest",
   author_email="rob@qwan.eu",
   description="A utility to split up concepts svg files",
