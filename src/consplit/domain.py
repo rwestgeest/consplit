@@ -29,15 +29,18 @@ class Drawing(ValueObject):
 
   def split(self):
     return [ self.copy( 
-      name='{}-{}'.format(self.name, layer.name),
+      name = self._format_cloned_name(i, layer),
       layers=[layer] 
-      ) for layer in self.layers ]
+      ) for i, layer in enumerate(self.layers) ]
 
   def split_stacked(self):
     return [ self.copy(
-      name='{}-{}'.format(self.name, layer_list[-1].name),
+      name = self._format_cloned_name(i, layer_list[-1]),
       layers = layer_list
-    ) for layer_list in reduce(rollup_layers, self.layers, [])]
+    ) for i, layer_list in enumerate(reduce(rollup_layers, self.layers, []))]
+
+  def _format_cloned_name(self, layer_index, layer):
+    return '{}-{}-{}'.format(self.name, layer_index+1, layer.name)
 
 def rollup_layers(lists_of_layers, layer):
   if len(lists_of_layers) == 0: return [[layer]]

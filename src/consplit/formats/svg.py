@@ -2,13 +2,6 @@ from lxml import objectify, etree
 from consplit.domain import Drawing, Layer, Stroke
 from consplit.formats.repo import Repo, as_svg, write_bytes_to
 
-def read_bytes_from(filepath):
-  with open(filepath, 'rb') as file:
-    return file.read()
-
-def xml_tree_from(string):
-  return objectify.fromstring(string)
-
 class SvgRepo(Repo):
   def __init__(self):
     super().__init__('svg')
@@ -41,3 +34,11 @@ def as_stroke(svg_stroke_element):
   return Stroke(
     type = etree.QName(svg_stroke_element).localname,
     attributes = svg_stroke_element.attrib)
+
+def read_bytes_from(filepath):
+  with open(filepath, 'rb') as file:
+    return file.read()
+
+def xml_tree_from(string):
+  return objectify.fromstring(string)
+
