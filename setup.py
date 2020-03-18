@@ -7,7 +7,7 @@ with open("requirements.txt", "r") as fh:
     
 setup(
   name='consplit',  
-  version='0.1',
+  version='0.2',
   author="Rob Westgeest",
   author_email="rob@qwan.eu",
   description="A utility to split up concepts svg files",
