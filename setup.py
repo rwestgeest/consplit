@@ -1,7 +1,9 @@
 from setuptools import setup, find_packages
 
 with open("README.md", "r") as fh:
-    long_description = fh.read()
+  long_description = fh.read()
+with open("requirements.txt", "r") as fh:
+  requires = fh.readlines()
     
 setup(
   name='consplit',  
@@ -12,7 +14,12 @@ setup(
   long_description=long_description,
   long_description_content_type="text/markdown",
   url="https://github.com/rwestgeest/consplit",
-  packages=['consplit'],
+  packages=find_packages(where='src'),
+  package_dir={'':'src'},
+  install_requires=requires,
+  entry_points = {
+    'console_scripts': ['consplit=consplit.command_line:main'],
+  },
   classifiers=[
       "Programming Language :: Python :: 3",
       "License :: OSI Approved :: MIT License",

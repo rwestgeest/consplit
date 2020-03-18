@@ -1,3 +1,4 @@
+from os import path
 from lxml import objectify, etree
 from consplit.domain import Drawing, Layer, Stroke
 
@@ -19,7 +20,7 @@ class SvgRepo:
     write_bytes_to(self.filepath(drawing, location), as_svg(drawing))
 
   def filepath(self, drawing, location):
-    return '{}/{}.svg'.format(location, drawing.name)
+    return path.join(location, '{}.svg'.format(drawing.name))
 
 def as_svg(drawing):
   E = objectify.ElementMaker(annotate=False, namespace="http://www.w3.org/2000/svg", nsmap ={ None : "http://www.w3.org/2000/svg", 'xlink':"http://www.w3.org/1999/xlink" })
