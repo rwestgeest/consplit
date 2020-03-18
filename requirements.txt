@@ -2,3 +2,4 @@ pyhamcrest
 pytest
 pytest_watch
 lxml
+cairosvg

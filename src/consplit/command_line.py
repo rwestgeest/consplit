@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
-from consplit.svg import SvgRepo
+from consplit.formats import SvgRepo, PngRepo
 from consplit.files import location_of
 from textwrap import dedent
 
@@ -20,7 +20,7 @@ def usage():
 def main():
   parser = ArgumentParser(description='''\
     Splits up concepts drawing so that each layer is in its own drawing.
-    
+
     Works in two modes: 
     1. Split mode (the default) creates a new drawing for each of the 
        layers in the input drawing. 
@@ -39,14 +39,17 @@ def main():
   parser.add_argument('concepts_svg_file', help="path to the the input svg file")
   parser.add_argument('-s','--stacked', help="use stacked mode", 
                       action='store_const', const='_stacked', default='')
+  parser.add_argument('--png', help="create png as output format", 
+                      action='store_const', const='store_true')
   args = parser.parse_args()
   
   mode='split' + args.stacked
 
   repo = SvgRepo()
+  output_repo = args.png and PngRepo() or repo
   drawing = repo.read(args.concepts_svg_file)
   for new_drawing in getattr(drawing, mode)():
-    repo.save(new_drawing, location_of(args.concepts_svg_file))
+    output_repo.save(new_drawing, location_of(args.concepts_svg_file))
 
 if __name__ == "__main__":
   main()

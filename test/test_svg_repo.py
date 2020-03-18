@@ -1,6 +1,6 @@
 from hamcrest import assert_that, equal_to
 from textwrap import dedent
-from consplit.svg import SvgRepo, xml_tree_from, as_drawing, as_layers, as_layer, as_stroke
+from consplit.formats.svg import SvgRepo, xml_tree_from, as_drawing, as_layers, as_layer, as_stroke
 from consplit.domain import Drawing, Layer, Stroke
 from builders import a, validDrawing
 
