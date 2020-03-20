@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
+from consplit.formatters import format_name_as, drawing_number_layer, drawing_layer, drawing_number
 from consplit.formats import SvgRepo, PngRepo
 from consplit.files import location_of
 from consplit.version import version
@@ -31,14 +32,27 @@ def main():
                       action='store_const', const='_stacked', default='')
   parser.add_argument('--png', help="create png as output format", 
                       action='store_const', const='store_true')
+  formatting_group = parser.add_argument_group('formatting')
+  name_formatting_group = formatting_group.add_mutually_exclusive_group()
+  name_formatting_group.add_argument('--format-drawing-n-layer', help="format names as <drawing>-<layer-index>-<layer> - the default", 
+                      action='store_true')
+  name_formatting_group.add_argument('--format-drawing-layer', help="format names as <drawing>-<layer>", 
+                      action='store_true')
+  name_formatting_group.add_argument('--format-drawing-n', help="format names as <drawing>-<layer-index>", 
+                      action='store_true')
+  formatting_group.add_argument('--allow-spaces', help="does not replace spaces by dashes", 
+                      action='store_true')
   args = parser.parse_args()
+
+  formatter=args.format_drawing_n and drawing_number() or (args.format_drawing_layer and drawing_layer() or drawing_number_layer())
+  formatter=args.allow_spaces and formatter.with_spaces() or formatter.without_spaces()
   
   mode='split' + args.stacked
 
   repo = SvgRepo()
   output_repo = args.png and PngRepo() or repo
   drawing = repo.read(args.concepts_svg_file)
-  for new_drawing in getattr(drawing, mode)():
+  for new_drawing in getattr(drawing, mode)(format_name_as(formatter)):
     output_repo.save(new_drawing, location_of(args.concepts_svg_file))
 
 if __name__ == "__main__":

@@ -3,6 +3,7 @@ from typing import List, Dict
 from functools import reduce
 from itertools import accumulate
 
+
 class ValueObject:
   def copy(self, **replacements):
     return replace(self, **replacements)
@@ -27,21 +28,19 @@ class Drawing(ValueObject):
   view_box: str
   layers: List[Layer] = field(default_factory=list)
 
-  def split(self):
+  def split(self, name_formatter):
     return [ self.copy( 
-      name = self._format_cloned_name(i, layer),
+      name = name_formatter.format(self, i, layer),
       layers=[layer] 
       ) for i, layer in enumerate(self.layers) ]
 
-  def split_stacked(self):
+  def split_stacked(self, name_formatter):
     return [ self.copy(
-      name = self._format_cloned_name(i, layer_list[-1]),
+      name = name_formatter.format(self, i, layer_list[-1]),
       layers = layer_list
     ) for i, layer_list in enumerate(reduce(rollup_layers, self.layers, []))]
-
-  def _format_cloned_name(self, layer_index, layer):
-    return '{}-{}-{}'.format(self.name, layer_index+1, layer.name)
 
 def rollup_layers(lists_of_layers, layer):
   if len(lists_of_layers) == 0: return [[layer]]
   return lists_of_layers + [lists_of_layers[-1] + [layer]]
+
