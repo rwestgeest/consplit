@@ -40,12 +40,15 @@ def main():
                       action='store_true')
   name_formatting_group.add_argument('--format-drawing-n', help="format names as <drawing>-<layer-index>", 
                       action='store_true')
+  formatting_group.add_argument('-l', '--lower-case', help="make file names lower case", 
+                      action='store_true')
   formatting_group.add_argument('--allow-spaces', help="does not replace spaces by dashes", 
                       action='store_true')
   args = parser.parse_args()
 
   formatter=args.format_drawing_n and drawing_number() or (args.format_drawing_layer and drawing_layer() or drawing_number_layer())
   formatter=args.allow_spaces and formatter.with_spaces() or formatter.without_spaces()
+  formatter=args.lower_case and formatter.lower_case() or formatter
   
   mode='split' + args.stacked
 

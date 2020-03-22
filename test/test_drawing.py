@@ -83,6 +83,13 @@ class TestSpacedWrapper:
     f=format_name_as(FormatterBuilder(self).with_spaces())
     assert_that(f.format(None, 0, None), equal_to("So very much  spaces"))
 
+class TestLowerCaseWrapper:
+  def format(self, drawing, index, layer):
+    return "NameWithCapitals"
+  def test_replaces_spaces_with_dashes(self):
+    f=format_name_as(FormatterBuilder(self).lower_case())
+    assert_that(f.format(None, 0, None), equal_to("namewithcapitals"))
+
 
 def drawing_with_name(name):
   return a(validDrawing().withName(name))
