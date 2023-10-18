@@ -1,5 +1,5 @@
 from setuptools import setup, find_packages
-from sys import path
+import sys
 sys.path.append('src')
 from consplit.version import version
 with open("README.md", "r") as fh:
